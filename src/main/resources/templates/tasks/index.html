@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>ToDo</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <header class="mb-5">
+    <nav class="navbar navbar-light bg-light">
+      <a href="/" class="navbar-brand">ToDo</a>
+    </nav>
+  </header>
+  <main>
+    <div class="todo-container">
+
+				<div class="d-flex justify-content-between align-items-center">
+        	<h1 class="h3 mb-4">タスク一覧</h1>
+        	<div>
+						<form action="#" method="get" th:action="@{/tasks/search}"> 
+              <label>ユーザー</label>
+              <select id="memberId" name="memberId">
+				      	<option th:each="member : ${members}" th:value="${member.id}" th:text="${member.name}" th:selected="${member.id} == *{memberId}">pulldown</option>
+					    </select>
+					    <button class="btn btn-primary btn-lg" type="submit">選択</button>
+						</form>
+        	</div>
+        	<div>
+						<form action="#" method="get" th:action="@{/tasks/noComplite}">
+					    <button class="btn btn-primary btn-lg" type="submit">未達成タスク</button>
+						</form>
+        	</div>
+        </div>
+
+        <table class="table table-bordered mb-3">
+          <thead>
+            <tr>
+              <th>状態</th>
+              <th>タスク</th>
+              <th>期限</th>
+              <th>達成ボタン</th>
+            </tr>
+          </thead>
+          <tbody id="taskList">
+            <tr th:each="task : ${tasks}">
+              <td class="text-center">
+                <span class="badge badge-pill" th:text="${task.status} ? '完了' : '未完了'"></span>
+              </td>
+              <td th:text="${task.title}"></td>
+              <td class="text-center" th:text="${task.timelimit}"></td>
+              <th:block th:if="${task.status == true}"><td></td></th></th:block>
+							<th:block th:unless="${task.status == true}">
+								<td>
+									<form th:action="@{/tasks/complite/{id}(id=*{id})}" th:method="put" th:object="${task}">
+										<button class="btn btn-sm btn-primary" type="submit">OK</button>
+									</form>
+								</td>
+							</th></th:block>
+            </tr>
+          </tbody>
+        </table>
+				<div class="d-flex justify-content-between align-items-center">
+        	<div class="text-left">
+          	<a href="/" class="btn btn-outline-primary">戻る</a>
+	        </div>
+	        <div class="text-right">
+  	        <a href="/tasks/add" class="btn btn-outline-primary">タスクを追加する</a>
+    	    </div>
+    	  </div>
+      </div>
+  </main>
+</body>
+</html>

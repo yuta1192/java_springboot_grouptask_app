@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.search.mappers.TaskMapper">
+    <!-- 結果と結果を受け取るクラスの紐づけ -->
+    <resultMap id="taskResultMap" type="com.example.search.domains.Task">
+      <result property="id" column="id" />
+      <result property="status" column="status"/>
+      <result property="title" column="title" />
+      <result property="timelimit" column="timelimit"/>
+      <result property="memberId" column="memberId" />
+    </resultMap>
+    <!-- SQL -->
+    <select id="all" resultMap="taskResultMap">
+        SELECT * FROM tasks
+    </select>
+    <select id="findByMemberTask" resultMap="taskResultMap" parameterType="Integer">
+        SELECT * FROM tasks WHERE memberId = #{memberId}
+    </select>
+     <insert id="add" parameterType="com.example.search.domains.Task">
+        INSERT INTO tasks(title, status, timelimit, memberId) VALUES (#{title}, false, #{timelimit}, #{memberId});
+    </insert>
+    <!-- findByTask  -->
+    <select id="findByTask" resultMap="taskResultMap" parameterType="Integer">
+    		SELECT * FROM tasks WHERE id = #{id}
+    </select>
+    <!-- compliteTask -->
+    <update id="compliteTask" parameterType="com.example.search.domains.Task">
+    		UPDATE tasks SET status = true;
+    </update>
+
+    <resultMap id="memberResultMap" type="com.example.search.domains.Member">
+      <result property="id" column="id" />
+      <result property="name" column="name"/>
+    </resultMap>
+    <select id="allMember" resultMap="memberResultMap">
+        SELECT * FROM members
+    </select>
+    <!-- findNotComplite -->
+    <select id="findNotComplite" resultMap="taskResultMap">
+    		SELECT * FROM tasks where status = false;
+    </select>
+</mapper>
