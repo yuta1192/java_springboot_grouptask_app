@@ -1,1 +1,1 @@
-# java_springboot_grouptask_app
+java/springbootによるグループタスク管理アプリ
