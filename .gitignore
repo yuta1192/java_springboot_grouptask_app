@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+[includeIf "gitdir:~/path/to/your-private/"]
+  path = ~/.gitconfig_sub
